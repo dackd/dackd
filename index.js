@@ -9,6 +9,24 @@ require("dotenv").config();
 
 const app = express();
 
+// Security and SEO middleware
+app.use((req, res, next) => {
+  // Security headers
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader(
+    "Permissions-Policy",
+    "geolocation=(), microphone=(), camera=()"
+  );
+
+  // Remove powered by header
+  res.removeHeader("X-Powered-By");
+
+  next();
+});
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

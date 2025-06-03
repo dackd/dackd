@@ -4,185 +4,485 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
   <title>
-    <%= title %>
+    <%= title %> - Free URL Shortener Service
   </title>
-  <link rel="icon" href="/favicon.ico" type="image/svg+xml">
+  <meta name="title" content="<%= title %> - Free URL Shortener Service">
+  <meta name="description"
+    content="Shorten long URLs instantly with our free URL shortener tool. Create short, clean links that are easy to share and track. Fast, reliable, and secure URL shortening service.">
+  <meta name="keywords"
+    content="URL shortener, link shortener, short links, tiny URL, link management, URL compression, free URL shortener, short URL generator">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="author" content="URL Shortener">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url"
+    content="<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') + req.originalUrl : '' %>">
+  <meta property="og:title" content="<%= title %> - Free URL Shortener Service">
+  <meta property="og:description"
+    content="Shorten long URLs instantly with our free URL shortener tool. Create short, clean links that are easy to share and track.">
+  <meta property="og:image"
+    content="<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') : '' %>/favicon-32x32.png">
+  <meta property="og:site_name" content="<%= title %>">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url"
+    content="<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') + req.originalUrl : '' %>">
+  <meta property="twitter:title" content="<%= title %> - Free URL Shortener Service">
+  <meta property="twitter:description"
+    content="Shorten long URLs instantly with our free URL shortener tool. Create short, clean links that are easy to share and track.">
+  <meta property="twitter:image"
+    content="<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') : '' %>/favicon-32x32.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+  <!-- Canonical URL -->
+  <link rel="canonical"
+    href="<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') + req.originalUrl : '' %>">
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "<%= title %>",
+    "description": "Free URL shortener service that helps you create short, manageable links from long URLs",
+    "url": "<%= typeof req !== 'undefined' ? req.protocol + '://' + req.get('host') : '' %>",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "URL Shortening",
+      "Link Management", 
+      "Click Tracking",
+      "Custom Short Codes"
+    ]
+  }
+  </script>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       margin: 0;
       padding: 20px;
-      background-color: #f4f4f4;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+      color: #333;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
     }
 
     h1 {
-      color: #333;
-      text-align: center;
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    h2 {
+      color: #34495e;
+      font-size: 1.8rem;
+      margin: 30px 0 20px 0;
+      font-weight: 600;
+    }
+
+    h3 {
+      color: #2c3e50;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
 
     .welcome {
-      text-align: center;
       margin: 20px 0;
-      color: #666;
+      color: #7f8c8d;
+    }
+
+    .welcome p {
+      font-size: 1.1rem;
+      margin: 10px 0;
+    }
+
+    .subtitle {
+      font-size: 1rem !important;
+      color: #95a5a6 !important;
     }
 
     .url-form {
-      background: #f9f9f9;
-      padding: 30px;
-      border-radius: 8px;
-      margin: 30px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px;
+      border-radius: 12px;
+      margin: 40px 0;
+      color: white;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #333;
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    #url-help {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
     }
 
     input[type="url"] {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 4px;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
       font-size: 16px;
       box-sizing: border-box;
-      transition: border-color 0.3s;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.95);
     }
 
     input[type="url"]:focus {
       outline: none;
-      border-color: #007bff;
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     .submit-btn {
-      background: #007bff;
+      background: #e74c3c;
       color: white;
-      padding: 12px 30px;
+      padding: 15px 40px;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .submit-btn:hover {
-      background: #0056b3;
+      background: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
     }
 
     .result {
-      margin-top: 20px;
+      margin-top: 30px;
+      padding: 25px;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      border: none;
+      border-radius: 12px;
+      color: white;
+    }
+
+    .result h2 {
+      color: white;
+      margin-top: 0;
+      font-size: 1.5rem;
+    }
+
+    .url-result p {
+      background: rgba(255, 255, 255, 0.1);
       padding: 15px;
-      background: #e8f5e8;
-      border: 1px solid #c3e6c3;
-      border-radius: 4px;
+      border-radius: 8px;
+      margin: 15px 0;
     }
 
     .error {
       margin-top: 20px;
-      padding: 15px;
-      background: #f8d7da;
-      border: 1px solid #f5c6cb;
-      border-radius: 4px;
-      color: #721c24;
+      padding: 20px;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      border: none;
+      border-radius: 12px;
+      color: white;
     }
 
     .copy-btn {
-      background: #28a745;
+      background: #f39c12;
       color: white;
-      padding: 8px 16px;
+      padding: 10px 20px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      margin-left: 10px;
+      margin-left: 15px;
       font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
     .copy-btn:hover {
-      background: #218838;
+      background: #e67e22;
+      transform: translateY(-1px);
     }
 
     .url-text {
       display: inline-block;
-      max-width: 500px;
+      max-width: 400px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       vertical-align: middle;
       word-break: break-all;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
     }
 
-    .result p {
+    .features {
+      margin: 50px 0;
+      text-align: center;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .feature {
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+      border: 1px solid #e9ecef;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .how-it-works {
+      margin: 50px 0;
+      background: #f8f9fa;
+      padding: 40px;
+      border-radius: 12px;
+    }
+
+    .steps {
+      list-style: none;
+      padding: 0;
+      counter-reset: step-counter;
+    }
+
+    .steps li {
+      counter-increment: step-counter;
+      margin: 25px 0;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      position: relative;
+      padding-left: 80px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .steps li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #3498db;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 10px 0;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
 
-    .result p strong {
-      flex-shrink: 0;
-      min-width: 120px;
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #e9ecef;
+      color: #7f8c8d;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .url-form {
+        padding: 25px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps li {
+        padding-left: 20px;
+      }
+
+      .steps li::before {
+        display: none;
+      }
+
+      .url-text {
+        max-width: 200px;
+      }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Focus styles for better accessibility */
+    button:focus,
+    input:focus {
+      outline: 3px solid #4CAF50;
+      outline-offset: 2px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>
-      <%= title %>
-    </h1>
-    <div class="welcome">
-      <p>Enter a long URL below to get a shortened version.</p>
-    </div>
+    <header>
+      <h1>
+        <%= title %>
+      </h1>
+      <div class="welcome">
+        <p>Enter a long URL below to get a shortened version.</p>
+        <p class="subtitle">Free, fast, and reliable URL shortening service for everyone.</p>
+      </div>
+    </header>
 
     <% if (typeof error !=='undefined' ) { %>
-      <div class="error">
+      <div class="error" role="alert">
         <strong>Error:</strong>
         <%= error %>
       </div>
       <% } %>
 
-        <div class="url-form">
-          <form action="/" method="POST">
-            <div class="form-group">
-              <label for="url">Enter your long URL:</label>
-              <input type="url" id="url" name="url" placeholder="https://example.com/very/long/url/path" required>
-            </div>
-            <button type="submit" class="submit-btn">Shorten URL</button>
-          </form>
-        </div>
+        <main>
+          <section class="url-form" aria-label="URL Shortening Form">
+            <form action="/" method="POST">
+              <div class="form-group">
+                <label for="url">Enter your long URL:</label>
+                <input type="url" id="url" name="url" placeholder="https://example.com/very/long/url/path" required
+                  aria-describedby="url-help">
+                <small id="url-help">Paste any long URL that you want to shorten</small>
+              </div>
+              <button type="submit" class="submit-btn" aria-label="Shorten the entered URL">Shorten URL</button>
+            </form>
+          </section>
 
-        <!-- Success result -->
-        <% if (typeof success !=='undefined' && success) { %>
-          <div class="result">
-            <p><strong>Original URL:</strong>
-              <span class="url-text" title="<%= originalUrl %>">
-                <%= originalUrl %>
-              </span>
-            </p>
-            <p><strong>Shortened URL:</strong>
-              <span id="shortened-url" class="url-text" title="<%= shortUrl %>">
-                <%= shortUrl %>
-              </span>
-              <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
-            </p>
-          </div>
-          <% } %>
+          <!-- Success result -->
+          <% if (typeof success !=='undefined' && success) { %>
+            <section class="result" aria-label="Shortened URL Result">
+              <h2>Your shortened URL is ready!</h2>
+              <div class="url-result">
+                <p><strong>Original URL:</strong>
+                  <span class="url-text" title="<%= originalUrl %>">
+                    <%= originalUrl %>
+                  </span>
+                </p>
+                <p><strong>Shortened URL:</strong>
+                  <span id="shortened-url" class="url-text" title="<%= shortUrl %>">
+                    <%= shortUrl %>
+                  </span>
+                  <button class="copy-btn" onclick="copyToClipboard()"
+                    aria-label="Copy shortened URL to clipboard">Copy</button>
+                </p>
+              </div>
+            </section>
+            <% } %>
+
+              <section class="features" aria-label="Service Features">
+                <h2>Why Choose Our URL Shortener?</h2>
+                <div class="features-grid">
+                  <div class="feature">
+                    <h3>🚀 Fast & Reliable</h3>
+                    <p>Lightning-fast URL shortening with 99.9% uptime guarantee</p>
+                  </div>
+                  <div class="feature">
+                    <h3>📊 Click Tracking</h3>
+                    <p>Monitor how many times your shortened links are clicked</p>
+                  </div>
+                  <div class="feature">
+                    <h3>🔒 Secure & Safe</h3>
+                    <p>All links are scanned for malware and spam protection</p>
+                  </div>
+                  <div class="feature">
+                    <h3>💯 100% Free</h3>
+                    <p>No registration required, completely free to use</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="how-it-works" aria-label="How It Works">
+                <h2>How It Works</h2>
+                <ol class="steps">
+                  <li>
+                    <strong>Paste Your URL:</strong> Copy and paste your long URL into the input field above
+                  </li>
+                  <li>
+                    <strong>Click Shorten:</strong> Press the "Shorten URL" button to generate your short link
+                  </li>
+                  <li>
+                    <strong>Share & Track:</strong> Use your new short URL anywhere and track its performance
+                  </li>
+                </ol>
+              </section>
+        </main>
+
+        <footer>
+          <p>&copy; 2024 <%= title %>. Built with ❤️ for the community.</p>
+        </footer>
   </div>
 
   <script>

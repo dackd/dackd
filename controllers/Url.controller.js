@@ -2,7 +2,7 @@ const Url = require("../models/Url");
 const randomCode = require("../utils/randomCode");
 
 const handleViewIndex = (req, res) => {
-  res.render("index", { title: "URL Shortener" });
+  res.render("index", { title: "URL Shortener", req: req });
 };
 
 const handleCreateUrl = async (req, res) => {
@@ -12,6 +12,7 @@ const handleCreateUrl = async (req, res) => {
     return res.status(400).render("index", {
       title: "URL Shortener",
       error: "Please provide a URL to shorten",
+      req: req,
     });
   }
 
@@ -21,6 +22,7 @@ const handleCreateUrl = async (req, res) => {
     return res.status(400).render("index", {
       title: "URL Shortener",
       error: "Please provide a valid URL",
+      req: req,
     });
   }
 
@@ -38,6 +40,7 @@ const handleCreateUrl = async (req, res) => {
       originalUrl: url,
       shortUrl: existingUrl.shortUrl,
       success: true,
+      req: req,
     });
   }
   let codeExists;
@@ -60,6 +63,7 @@ const handleCreateUrl = async (req, res) => {
     originalUrl: url,
     shortUrl: shortUrl,
     success: true,
+    req: req,
   });
 };
 
