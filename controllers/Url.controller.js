@@ -40,6 +40,14 @@ const handleCreateUrl = async (req, res) => {
       success: true,
     });
   }
+  let codeExists;
+  do {
+    codeExists = await Url.findOne({ code: shortCode });
+    if (codeExists) {
+      shortCode = randomCode();
+      shortUrl = `${protocol}://${host}/${shortCode}`;
+    }
+  } while (codeExists);
 
   await Url.create({
     originalUrl: url,
