@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    .welcome {
+      text-align: center;
+      margin: 20px 0;
+      color: #666;
+    }
+
+    .url-form {
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="url"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    input[type="url"]:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .submit-btn {
+      background: #007bff;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e8f5e8;
+      border: 1px solid #c3e6c3;
+      border-radius: 4px;
+    }
+
+    .error {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
+      color: #721c24;
+    }
+
+    .copy-btn {
+      background: #28a745;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 14px;
+    }
+
+    .copy-btn:hover {
+      background: #218838;
+    }
+
+    .url-text {
+      display: inline-block;
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      word-break: break-all;
+    }
+
+    .result p {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .result p strong {
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>
+      <%= title %>
+    </h1>
+    <div class="welcome">
+      <p>Enter a long URL below to get a shortened version.</p>
+    </div>
+
+    <% if (typeof error !=='undefined' ) { %>
+      <div class="error">
+        <strong>Error:</strong>
+        <%= error %>
+      </div>
+      <% } %>
+
+        <div class="url-form">
+          <form action="/" method="POST">
+            <div class="form-group">
+              <label for="url">Enter your long URL:</label>
+              <input type="url" id="url" name="url" placeholder="https://example.com/very/long/url/path" required>
+            </div>
+            <button type="submit" class="submit-btn">Shorten URL</button>
+          </form>
+        </div>
+
+        <!-- Success result -->
+        <% if (typeof success !=='undefined' && success) { %>
+          <div class="result">
+            <p><strong>Original URL:</strong>
+              <span class="url-text" title="<%= originalUrl %>">
+                <%= originalUrl %>
+              </span>
+            </p>
+            <p><strong>Shortened URL:</strong>
+              <span id="shortened-url" class="url-text" title="<%= shortUrl %>">
+                <%= shortUrl %>
+              </span>
+              <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+            </p>
+          </div>
+          <% } %>
+  </div>
+
+  <script>
+    function copyToClipboard() {
+      const shortUrl = document.getElementById('shortened-url').textContent;
+      navigator.clipboard.writeText(shortUrl).then(function () {
+        const buttonCopy = document.querySelector('.copy-btn');
+        buttonCopy.textContent = 'Copied!';
+        setTimeout(() => {
+          buttonCopy.textContent = 'Copy';
+        }, 2000);
+      }, function (err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  </script>
+</body>
+
+</html>
