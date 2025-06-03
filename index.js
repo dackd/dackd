@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const compression = require("compression");
+
 const connectDB = require("./config/database");
 const urlRoutes = require("./routes/Url.route");
 const { handle404 } = require("./controllers/Url.controller");
@@ -9,6 +11,13 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(
+  compression({
+    level: 6,
+    threshold: 1024,
+  })
+);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));

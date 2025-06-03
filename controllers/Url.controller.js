@@ -1,4 +1,5 @@
 const Url = require("../models/Url");
+const randomCode = require("../utils/randomCode");
 
 const handleViewIndex = (req, res) => {
   res.render("index", { title: "URL Shortener" });
@@ -23,7 +24,7 @@ const handleCreateUrl = async (req, res) => {
     });
   }
 
-  const shortCode = Math.random().toString(36).substr(2, 8);
+  const shortCode = randomCode();
 
   const protocol =
     req.secure || req.get("x-forwarded-proto") === "https" ? "https" : "http";
